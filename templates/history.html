@@ -1,0 +1,34 @@
+{% extends "layout.html"%}
+{%block title%}
+Quote
+{%endblock%}
+
+{% block main %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Symbol</th>
+      <th scope="col">Price</th>
+      <th scope="col">Shares</th>
+      <th scope="col">Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for stock in result %}
+    <tr>
+      <td>{{stock.date}}</td>
+      <td>{{stock.symbol}}</td>
+      <td>{{stock.price|usd}}</td>
+      {% if stock.shares > 0 %}
+      <td>{{stock.shares|int}}</td>
+      <td>BOUGHT</td>
+      {% else %}
+      <td>{{stock.shares|abs}}</td>
+      <td>SOLD</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

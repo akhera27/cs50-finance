@@ -1,0 +1,79 @@
+{% extends "layout.html"%}
+{%block title%}
+Portfolio
+{%endblock%}
+
+{% block main %}
+    <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Cash Available</th>
+      <th scope="col" class="p&l">P&L</th>
+      <th scope="col">Total Assets</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{balance.cash|usd}}</td>
+      <td id="prlo">{{balance.prlo|usd}}</td>
+      <td>{{balance.total|usd}}</td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+<p style="margin-top:3em;">
+  <button class="btn btn-dark" type="button" data-toggle="collapse" onclick="reverse()"  data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    Stock Holdings <br> <div id="drop" style="transform: rotate(45deg); border: solid white;border-width: 0 3px 3px 0;display: inline-block;padding: 3px;"></div>
+  </button>
+</p>
+<script>
+    function reverse(){
+        var drop = document.getElementById('drop').style.transform
+        console.log(drop);
+        document.getElementById('drop').style.transform = (drop == 'rotate(225deg)')?'rotate(45deg)':'rotate(225deg)';
+    }
+</script>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Company</th>
+      <th scope="col">Symbol</th>
+      <th scope="col">Current Price</th>
+      <th scope="col">Shares</th>
+      <th scope="col">P&L</th></th>
+      <th scope="col">Total Invested</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for stock in stocks%}
+    <tr>
+      <td>{{stock.company}}</td>
+      <td>{{stock.symbol}}</td>
+      <td>{{stock.currprice|usd}}</td>
+      <td>{{stock.shares}}</td>
+      <td id="prlo">{{stock.prlo|usd}}</td>
+      <td>{{stock.total|usd}}</td>
+    </tr>
+      {% endfor %}
+  </tbody>
+</table>
+  </div>
+</div>
+<form action="/" method="POST">
+           <div class="form-group" id="cash">
+            <input autocomplete="off" autofocus class="form-control mt-2" name="cash" placeholder="Amount to add" type="text">
+        </div>
+    <button class="btn btn-outline-dark" type="submit">Add Cash</button>
+</form>
+
+<script>
+    var prlo = document.getElementById("prlo");
+    if (parseFloat(prlo.textContent.substring(1)) > 0.0){
+        document.getElementById("prlo").style.color= "#00ff00";
+    }
+    else
+    document.getElementById("prlo").style.color="#ff6666";
+</script>
+{% endblock %}

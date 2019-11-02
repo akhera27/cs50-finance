@@ -1,0 +1,83 @@
+{% extends "layout.html"%}
+{%block title%}
+Quote
+{%endblock%}
+
+{% block main %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Company</th>
+      <th scope="col">Symbol</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{name}}</td>
+      <td>{{symbol}}</td>
+      <td>{{price|usd}}</td>
+    </tr>
+  </tbody>
+</table>
+
+        <script>
+        // url
+            function add(){
+                compare=document.getElementById("compare");
+                if(compare.innerHTML == ""){
+                var form = document.createElement("form");
+                form.setAttribute("class","form-group");
+                compare.appendChild(form);
+                var input = document.createElement("input");
+                input.setAttribute("id","sym");
+                input.setAttribute("class","form-control");
+                input.setAttribute("placeholder","symbol");
+                input.setAttribute("autocomplete","off");
+                input.autofocus = true;
+                input.setAttribute("onkeydown","if(event.keyCode == 13){event.preventDefault();document.getElementById('compare-button').click();}")
+                form.appendChild(input);
+            }
+            else{
+                symbol=document.getElementById("sym");
+                var table = document.querySelector("table");
+                for(let i=0; i< table.rows.length; i++)
+                {
+                  if(table.rows.item(i).cells.item(1).innerHTML.toLowerCase() == symbol.value.toLowerCase())
+                  {
+                  alert("Already Exists in the table");
+                  symbol.value="";
+                  return;
+                  }
+                }
+                var xmlhttp = new XMLHttpRequest();
+                console.log("/quote"+"?symbol="+symbol.value);
+
+
+                xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var result = JSON.parse(this.responseText);
+                    console.log(result);
+                    if(result == null)
+                    {
+                    alert("Symbol not related to any company");
+                    }
+                    else{
+                    var tbody= document.querySelector("tbody");
+                    var tr = document.createElement("tr")
+                    tr.innerHTML="<td>"+result["name"]+"</td>"+"<td>"+result["symbol"]+"</td>"+"<td>"+result["price"]+"</td>";
+                    tbody.appendChild(tr);
+                    }}
+                };
+
+                xmlhttp.open("POST","/quote"+"?symbol="+symbol.value, true);
+                xmlhttp.send();
+                symbol.value="";
+
+            }
+            }
+        </script>
+        <!--{{ url_for("quote") }}-->
+        <div id="compare"></div>
+        <button class="btn btn-primary" type="submit" onclick="add()"  id="compare-button">Compare</button>
+{% endblock %}

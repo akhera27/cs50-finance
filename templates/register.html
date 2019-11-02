@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input autocomplete="off" autofocus class="form-control" oninput="check()" name="username" placeholder="Username" type="text">
+        </div>
+        <div id="exist"></div>
+        <div class="form-group">
+            <input class="form-control" name="password" placeholder="Password" type="password">
+        </div>
+         <div class="form-group">
+            <input class="form-control" name="confirmation" placeholder="Confirm Password" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+        <div style="margin:2em;">
+        <a href="/login">Log In</a>
+    </div>
+    <script>
+    function check(){
+        username=document.getElementsByName("username")[0].value;
+        xhr= new XMLHttpRequest();
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == 4 && xhr.status == 200)
+            {
+                var result=JSON.parse(xhr.responseText);
+                console.log(username+":"+result);
+                exist=document.getElementById("exist");
+                if(result)
+                {
+                    p=document.createElement("p");
+                    p.innerHTML="Username already exists!!";
+                    p.style="color:red;";
+                    exist.appendChild(p);
+                }
+                else{
+                    exist.innerHTML="";
+                }
+            }
+        }
+        xhr.open("GET","/check?username="+username,true);
+        xhr.send();
+    }
+
+    </script>
+{% endblock %}
