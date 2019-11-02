@@ -5,4 +5,3 @@ A web app via which you can manage portfolios of stocks. Not only will this tool
 Preview: https://www.youtube.com/embed/WCIgBzFLQCY
 
 Tools Used- Python, Flask, Jinja2, HTML, CSS, Bootstrap, JavaScript, AJAX, SQLite
-SQLite
