@@ -1,1 +1,1 @@
-application:app
+web: application:app
