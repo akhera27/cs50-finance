@@ -30,7 +30,7 @@ app.jinja_env.filters["usd"] = usd
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-app.secret_key="aBAVAVAGAGAFAF!@#!@!!@#!"
+app.config["SECRET_KEY"] = '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
 Session(app)
 
 # Configure CS50 Library to use SQLite database
